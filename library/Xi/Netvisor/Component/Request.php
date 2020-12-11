@@ -116,7 +116,8 @@ class Request
             'X-Netvisor-Interface-Language'           => $this->config->getLanguage(),
             'X-Netvisor-Organisation-ID'              => $this->config->getOrganizationId(),
             'X-Netvisor-Authentication-TransactionId' => $authenticationTransactionId,
-            'X-Netvisor-Authentication-MAC'           => $this->getAuthenticationMac($url, $authenticationTimestamp, $authenticationTransactionId)
+            'X-Netvisor-Authentication-MAC'           => $this->getAuthenticationMac($url, $authenticationTimestamp, $authenticationTransactionId),
+			'X-Netvisor-Authentication-MACHashCalculationAlgorithm'           => 'SHA256'
         );
     }
 
@@ -151,7 +152,7 @@ class Request
             $this->config->getPartnerKey(),
         );
 
-        return md5(implode('&', $parameters));
+        return hash('sha256', implode('&', $parameters));
     }
 
     /**
